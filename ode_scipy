@@ -1,0 +1,54 @@
+''' ODE's with SciPy '''
+
+# NOTE: you might need to download some Python libraries before implementing this code 
+
+# Solve the ordinary differential equation: dy/dt = -2*y*t , with y(0) = 1 for t belongs to [0, 2]
+
+from scipy.integrate import odeint
+import numpy as N
+
+def f(y, t):
+    return -2 * y * t
+    
+y0 = 1          # Initial value
+a, b = 0, 2     # Integration limits for t    
+t = N.arange(a, b, 0.01)
+
+y = odeint(f, y0, t)  # To compute y
+
+# To plot:-
+import pylab
+pylab.plot(t, y)
+pylab.xlabel('t')
+pylab.ylabel('y(t)')
+pylab.show()
+
+
+# Solve the IVP graphically: (3x - 1)y'' - (3x + 2)y' + (6x - 8)y = 0 , y(0) = 2 , y'(0) = 3
+
+import numpy as np
+from scipy.integrate import odeint
+import matplotlib.pyplot as plt
+
+def g(y, x):
+    y0 = y[0]       # y0 = y[0] = y
+    y1 = y[1]       # y1 = y[1] = y'
+    y2 = ((3*x+2)*y1 + (6*x-8)*y0)/(3*x-1)  # y2 is y''
+    return y1, y2
+
+# Initial conditions: y(0) = 2, & y'(0) = 3
+init = 2.0, 3.0
+
+# First integrate from 0 to 2
+x = np.linspace(0, 2, num = 100)
+sol = odeint(g, init, x)
+plt.plot(x, sol[:,0], color = 'b')
+
+# Then integrate from 0 to -2
+x = np.linspace(0, -2, num = 100)
+sol = odeint(g, init, x)
+plt.plot(x, sol[:,0], color = 'b')
+
+plt.xlabel('x')
+plt.ylabel('y(x)')
+plt.show()
